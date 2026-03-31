@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Calendar, Clock, ClipboardList, Package, BarChart3, UserPlus, CheckSquare } from "lucide-react";
+import { Calendar, Clock, ClipboardList, Package, BarChart3, UserPlus, CheckSquare, FolderOpen } from "lucide-react";
 import MobileContainer from "@/components/app/MobileContainer";
 import PageTransition from "@/components/app/PageTransition";
 import Header from "@/components/app/Header";
 import GlassCard from "@/components/app/GlassCard";
 import AnimatedButton from "@/components/app/AnimatedButton";
+import BottomNav from "@/components/app/BottomNav";
 import { useNavigate } from "react-router-dom";
+import { useProjects } from "@/contexts/ProjectContext";
 import { format } from "date-fns";
+import { toast } from "@/hooks/use-toast";
 
 const tabs = [
   { id: "overview", label: "Overview" },
@@ -20,13 +23,14 @@ const DashboardPage: React.FC = () => {
   const [showTabs, setShowTabs] = useState(false);
   const [attendance, setAttendance] = useState<string | null>(null);
   const navigate = useNavigate();
+  const { selectedProject } = useProjects();
   const today = format(new Date(), "EEEE, MMMM d, yyyy");
 
   return (
     <MobileContainer>
       <Header />
       <PageTransition>
-        <div className="px-5 pb-8 pt-4">
+        <div className="px-5 pb-4 pt-4">
           {/* Date */}
           <motion.div
             initial={{ opacity: 0 }}
@@ -38,22 +42,36 @@ const DashboardPage: React.FC = () => {
           </motion.div>
 
           {/* Project Card */}
-          <GlassCard
-            onClick={() => setShowTabs(!showTabs)}
-            className="gradient-warm mb-6 cursor-pointer"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            <h3 className="font-display text-lg font-bold text-primary-foreground">Project A</h3>
-            <div className="mt-1 flex items-center gap-2 text-sm text-primary-foreground/80">
-              <Clock size={14} />
-              Due: April 30, 2026
-            </div>
-          </GlassCard>
+          {selectedProject ? (
+            <GlassCard
+              onClick={() => setShowTabs(!showTabs)}
+              className="gradient-warm mb-6 cursor-pointer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <h3 className="font-display text-lg font-bold text-primary-foreground">{selectedProject.name}</h3>
+              <p className="text-sm text-primary-foreground/80 mt-0.5">{selectedProject.description}</p>
+              <div className="mt-1 flex items-center gap-2 text-sm text-primary-foreground/80">
+                <Clock size={14} />
+                Due: {selectedProject.dueDate || "Not set"}
+              </div>
+            </GlassCard>
+          ) : (
+            <GlassCard
+              onClick={() => navigate("/projects")}
+              className="mb-6 cursor-pointer text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+            >
+              <FolderOpen size={24} className="mx-auto mb-2 text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">No project selected</p>
+              <p className="text-xs text-primary font-medium mt-1">Tap to select a project</p>
+            </GlassCard>
+          )}
 
           {/* Tabs */}
           <AnimatePresence>
-            {showTabs && (
+            {showTabs && selectedProject && (
               <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{ height: "auto", opacity: 1 }}
@@ -86,7 +104,7 @@ const DashboardPage: React.FC = () => {
                 >
                   {activeTab === "overview" && (
                     <GlassCard hover={false}>
-                      <p className="text-sm text-foreground">Residential complex — Phase 2 construction in progress. Foundation complete, structural work ongoing.</p>
+                      <p className="text-sm text-foreground">{selectedProject.description || "No description available."}</p>
                     </GlassCard>
                   )}
                   {activeTab === "tasks" && (
@@ -125,7 +143,9 @@ const DashboardPage: React.FC = () => {
               variant="secondary"
               className="flex-col gap-1 py-4"
               onClick={() => {
-                setAttendance(format(new Date(), "hh:mm:ss a"));
+                const time = format(new Date(), "hh:mm:ss a");
+                setAttendance(time);
+                toast({ title: "Attendance Marked", description: `Logged at ${time}` });
               }}
             >
               <CheckSquare size={20} className="text-primary" />
@@ -183,6 +203,7 @@ const DashboardPage: React.FC = () => {
           </div>
         </div>
       </PageTransition>
+      <BottomNav />
     </MobileContainer>
   );
 };

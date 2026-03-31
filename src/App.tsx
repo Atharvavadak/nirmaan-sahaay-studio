@@ -4,6 +4,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/contexts/ThemeContext";
+import { ProjectProvider } from "@/contexts/ProjectContext";
 import { AnimatePresence } from "framer-motion";
 import AuthPage from "./pages/AuthPage";
 import ProjectSelectionPage from "./pages/ProjectSelectionPage";
@@ -22,6 +23,7 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <ThemeProvider>
+      <ProjectProvider>
       <TooltipProvider>
         <Toaster />
         <Sonner />
@@ -43,6 +45,7 @@ const App = () => (
           </AnimatePresence>
         </BrowserRouter>
       </TooltipProvider>
+      </ProjectProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
