@@ -4,6 +4,7 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import MobileContainer from "@/components/app/MobileContainer";
 import PageTransition from "@/components/app/PageTransition";
 import Header from "@/components/app/Header";
+import BottomNav from "@/components/app/BottomNav";
 import GlassCard from "@/components/app/GlassCard";
 
 const data = [
