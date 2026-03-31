@@ -35,8 +35,9 @@ const HelpPage: React.FC = () => (
           </div>
         </GlassCard>
       </div>
-    </PageTransition>
-  </MobileContainer>
+      </PageTransition>
+      <BottomNav />
+    </MobileContainer>
 );
 
 export default HelpPage;

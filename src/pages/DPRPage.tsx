@@ -98,6 +98,7 @@ const DPRPage: React.FC = () => {
           </div>
         </div>
       </PageTransition>
+      <BottomNav />
     </MobileContainer>
   );
 };

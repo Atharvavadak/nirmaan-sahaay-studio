@@ -62,6 +62,7 @@ const ReportPage: React.FC = () => (
         </div>
       </div>
     </PageTransition>
+    <BottomNav />
   </MobileContainer>
 );
 

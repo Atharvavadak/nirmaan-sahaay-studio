@@ -95,6 +95,7 @@ const MaterialsPage: React.FC = () => {
           </Modal>
         </div>
       </PageTransition>
+      <BottomNav />
     </MobileContainer>
   );
 };
