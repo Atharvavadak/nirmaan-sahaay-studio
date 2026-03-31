@@ -2,6 +2,8 @@ import React from "react";
 import { motion } from "framer-motion";
 import { Building2, CheckCircle2, Calendar } from "lucide-react";
 import GlassCard from "./GlassCard";
+import HealthBadge from "./HealthBadge";
+import { getProjectHealth } from "@/lib/projectHealth";
 import type { Project } from "@/contexts/ProjectContext";
 
 interface Props {
