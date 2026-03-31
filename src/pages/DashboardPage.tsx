@@ -28,6 +28,7 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { selectedProject } = useProjects();
   const today = format(new Date(), "EEEE, MMMM d, yyyy");
+  const health = selectedProject ? getProjectHealth(selectedProject.dueDate) : null;
 
   return (
     <MobileContainer>
