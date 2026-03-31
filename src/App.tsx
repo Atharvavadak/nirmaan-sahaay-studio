@@ -45,6 +45,7 @@ const App = () => (
           </AnimatePresence>
         </BrowserRouter>
       </TooltipProvider>
+      </ProjectProvider>
     </ThemeProvider>
   </QueryClientProvider>
 );
