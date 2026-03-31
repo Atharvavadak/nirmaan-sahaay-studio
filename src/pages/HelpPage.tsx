@@ -2,6 +2,7 @@ import React from "react";
 import MobileContainer from "@/components/app/MobileContainer";
 import PageTransition from "@/components/app/PageTransition";
 import Header from "@/components/app/Header";
+import BottomNav from "@/components/app/BottomNav";
 import GlassCard from "@/components/app/GlassCard";
 import { HelpCircle, Info } from "lucide-react";
 
