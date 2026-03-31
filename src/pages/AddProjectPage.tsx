@@ -3,24 +3,39 @@ import { motion } from "framer-motion";
 import MobileContainer from "@/components/app/MobileContainer";
 import PageTransition from "@/components/app/PageTransition";
 import Header from "@/components/app/Header";
+import BottomNav from "@/components/app/BottomNav";
 import AnimatedInput from "@/components/app/AnimatedInput";
 import AnimatedButton from "@/components/app/AnimatedButton";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, CheckCircle2 } from "lucide-react";
+import { useProjects } from "@/contexts/ProjectContext";
+import { toast } from "@/hooks/use-toast";
 
 const AddProjectPage: React.FC = () => {
   const navigate = useNavigate();
+  const { addProject } = useProjects();
   const [loading, setLoading] = useState(false);
   const [done, setDone] = useState(false);
   const [form, setForm] = useState({ name: "", dueDate: "", deadline: "", description: "" });
 
   const handleSubmit = () => {
+    if (!form.name.trim()) {
+      toast({ title: "Validation Error", description: "Project name is required", variant: "destructive" });
+      return;
+    }
     setLoading(true);
     setTimeout(() => {
+      addProject({
+        name: form.name,
+        dueDate: form.dueDate,
+        deadline: form.deadline,
+        description: form.description,
+      });
       setLoading(false);
       setDone(true);
-      setTimeout(() => navigate("/dashboard"), 1200);
-    }, 1000);
+      toast({ title: "Project Created!", description: `${form.name} has been added successfully.` });
+      setTimeout(() => navigate("/projects"), 1200);
+    }, 800);
   };
 
   return (
@@ -67,6 +82,7 @@ const AddProjectPage: React.FC = () => {
           )}
         </div>
       </PageTransition>
+      <BottomNav />
     </MobileContainer>
   );
 };
