@@ -3,6 +3,7 @@ import { Package, CheckCircle2, XCircle, Truck } from "lucide-react";
 import MobileContainer from "@/components/app/MobileContainer";
 import PageTransition from "@/components/app/PageTransition";
 import Header from "@/components/app/Header";
+import BottomNav from "@/components/app/BottomNav";
 import GlassCard from "@/components/app/GlassCard";
 import Modal from "@/components/app/Modal";
 
