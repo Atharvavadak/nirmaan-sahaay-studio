@@ -7,6 +7,9 @@ import Header from "@/components/app/Header";
 import GlassCard from "@/components/app/GlassCard";
 import AnimatedButton from "@/components/app/AnimatedButton";
 import BottomNav from "@/components/app/BottomNav";
+import HealthBadge from "@/components/app/HealthBadge";
+import HealthAlerts from "@/components/app/HealthAlerts";
+import { getProjectHealth } from "@/lib/projectHealth";
 import { useNavigate } from "react-router-dom";
 import { useProjects } from "@/contexts/ProjectContext";
 import { format } from "date-fns";
@@ -25,6 +28,7 @@ const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { selectedProject } = useProjects();
   const today = format(new Date(), "EEEE, MMMM d, yyyy");
+  const health = selectedProject ? getProjectHealth(selectedProject.dueDate) : null;
 
   return (
     <MobileContainer>
@@ -41,6 +45,11 @@ const DashboardPage: React.FC = () => {
             {today}
           </motion.div>
 
+          {/* Health Alerts */}
+          {selectedProject && health && (
+            <HealthAlerts health={health} projectName={selectedProject.name} />
+          )}
+
           {/* Project Card */}
           {selectedProject ? (
             <GlassCard
@@ -49,7 +58,10 @@ const DashboardPage: React.FC = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
             >
-              <h3 className="font-display text-lg font-bold text-primary-foreground">{selectedProject.name}</h3>
+              <div className="flex items-center justify-between mb-1">
+                <h3 className="font-display text-lg font-bold text-primary-foreground">{selectedProject.name}</h3>
+                {health && <HealthBadge status={health.status} label={health.label} />}
+              </div>
               <p className="text-sm text-primary-foreground/80 mt-0.5">{selectedProject.description}</p>
               <div className="mt-1 flex items-center gap-2 text-sm text-primary-foreground/80">
                 <Clock size={14} />
